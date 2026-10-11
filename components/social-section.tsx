@@ -1,0 +1,168 @@
+"use client"
+
+import { revealLine, revealParent } from "@/lib/reveal"
+import { motion, useInView } from "framer-motion"
+import { useSound } from "./sound-provider"
+import { useRef } from "react"
+import { Instagram } from "lucide-react"
+import Image from "next/image"
+
+const instagramPosts = [
+  { image: "/images/social-skate-night.png", alt: "Skater kickflipping under a street light at night", likes: "3.2k" },
+  { image: "/images/social-dark-studio.png", alt: "Moody dark studio desk setup with glowing monitors", likes: "1.8k" },
+  { image: "/images/social-dark-gym.png", alt: "Chalked hands gripping a barbell under a spotlight", likes: "2.4k" },
+  { image: "/images/social-neon-street.png", alt: "Techwear street fashion in a neon-lit alley", likes: "2.9k" },
+  { image: "/images/social-underground-dj.png", alt: "Hands on a DJ mixer in a dark warehouse club", likes: "1.5k" },
+  { image: "/images/social-night-run.png", alt: "Runner silhouetted on a bridge at night", likes: "2.1k" },
+]
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.06,
+      delayChildren: 0.15,
+    },
+  },
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, scale: 0.8, y: 20 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 100,
+      damping: 20,
+    },
+  },
+}
+
+export function SocialSection() {
+  const { play } = useSound()
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true, margin: "-50px" })
+
+  return (
+    <section id="creators" className="relative py-16 bg-[#121212]/75 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: [0.25, 0.4, 0.25, 1] }}
+          className="text-center mb-10"
+        >
+          <motion.span
+            className="font-mono text-[#E5FF00] text-xs tracking-widest inline-block"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+          >
+            FOLLOW THE ENERGY
+          </motion.span>
+          <motion.h2
+            className="text-3xl md:text-5xl font-black text-white tracking-tighter mt-2 overflow-hidden"
+            variants={revealParent}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.6 }}
+          >
+            <motion.span
+              className="inline-block text-gloss"
+              variants={revealLine}
+            >
+              @OBJECT
+            </motion.span>
+            <motion.span
+              className="text-shine inline-block"
+              variants={revealLine}
+            >
+              .XF
+            </motion.span>
+          </motion.h2>
+        </motion.div>
+
+        <motion.div
+          ref={ref}
+          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3"
+          variants={containerVariants}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+        >
+          {instagramPosts.map((post, index) => (
+            <motion.div
+              key={index}
+              onClick={() => play("click")}
+              variants={itemVariants}
+              whileHover={{
+                scale: 1.05,
+                zIndex: 10,
+                transition: { type: "spring", stiffness: 300, damping: 20 },
+              }}
+              className="relative aspect-square rounded-xl overflow-hidden group cursor-pointer"
+            >
+              <Image
+                src={post.image || "/placeholder.svg"}
+                alt={post.alt}
+                fill
+                sizes="(min-width: 1024px) 16vw, (min-width: 768px) 33vw, 50vw"
+                quality={70}
+                loading="lazy"
+                decoding="async"
+                className="object-cover brightness-75 group-hover:brightness-100 transition-[filter] duration-500"
+              />
+              <motion.div
+                className="absolute inset-0 bg-[#E5FF00]/0 group-hover:bg-[#E5FF00]/20 flex items-center justify-center"
+                initial={{ opacity: 0 }}
+                whileHover={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+              >
+                <motion.div
+                  className="flex items-center gap-1 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  initial={{ y: 10 }}
+                  whileHover={{ y: 0 }}
+                >
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                  </svg>
+                  <span className="font-mono text-xs">{post.likes}</span>
+                </motion.div>
+              </motion.div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        <motion.div
+          className="flex justify-center mt-8"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.5 }}
+        >
+          <motion.a
+            href="https://www.instagram.com/object.xf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 bg-[#E5FF00] text-[#000000] px-6 py-3 rounded-full font-bold text-sm tracking-wide relative overflow-hidden group shadow-[0_0_30px_rgba(229,255,0,0.35)] hover:shadow-[0_0_45px_rgba(229,255,0,0.55)] transition-shadow"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ type: "spring", stiffness: 400, damping: 17 }}
+          >
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full"
+              whileHover={{ x: "200%" }}
+              transition={{ duration: 0.6 }}
+            />
+            <Instagram className="w-4 h-4 relative z-10" />
+            <span className="relative z-10">Follow @object.xf</span>
+          </motion.a>
+        </motion.div>
+      </div>
+    </section>
+  )
+}
