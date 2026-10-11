@@ -2,7 +2,7 @@
 
 A high-end, ultra-interactive D2C landing page built for modern beverage and functional drink brands. Designed to deliver an immersive Apple/Awwwards-grade visual experience with buttery-smooth 60+ FPS performance on mobile and desktop devices.
 
-![Objectified Preview]([https://your-deployment-url.vercel.app/og-image.png](https://objectified.vercel.app/)) *(вставь сюда ссылку на скриншот/превью)*
+![Objectified Preview]([[https://your-deployment-url.vercel.app/og-image.png](https://objectified.vercel.app/)](https://objectified.vercel.app/))
 
 ---
 
